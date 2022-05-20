@@ -1,0 +1,43 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    // waveforms elaborates, simulates and opens waveforms in one ctrl + shift + b command!
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "elaborate",
+            "type": "shell",
+            "command": "iverilog.exe -o build/tb *.v",
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            }
+        },
+        {
+            "label": "simulate",
+            "type": "shell",
+            "command": "vvp tb",
+            "options": {
+                "cwd": "${workspaceFolder}/src/build"
+            },
+            "dependsOn": [
+                "elaborate"
+            ]
+        },
+        {
+            "label": "waveforms",
+            "type": "shell",
+            "command": "gtkwave tb.vcd",
+            "options": {
+                "cwd": "${workspaceFolder}/src/build"
+            },
+            "dependsOn": [
+                "simulate"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
